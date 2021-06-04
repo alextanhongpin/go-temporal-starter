@@ -1,4 +1,4 @@
-package greet
+package app
 
 import "go.temporal.io/sdk/workflow"
 

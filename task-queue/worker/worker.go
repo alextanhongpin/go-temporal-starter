@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/alextanhongpin/go-temporal-starter/worker/greet"
+	app "github.com/alextanhongpin/go-temporal-starter/task-queue"
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 )
@@ -16,8 +16,8 @@ func main() {
 	}
 	defer c.Close()
 
-	w := worker.New(c, "your_task_queue", worker.Options{})
-	w.RegisterWorkflow(greet.SimpleWorkflow)
+	w := worker.New(c, app.GreetTaskQueue, worker.Options{})
+	w.RegisterWorkflow(app.SimpleWorkflow)
 	err = w.Run(worker.InterruptCh())
 	if err != nil {
 		log.Fatalln("unable to start workflow", err)
