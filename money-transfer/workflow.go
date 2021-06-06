@@ -7,7 +7,9 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 
+// TransferMoney is a Temporal workflow.
 func TransferMoney(ctx workflow.Context, transferDetails TransferDetails) error {
+	// RetryPolicy specifies how to automatically handle retries.
 	retryPolicy := &temporal.RetryPolicy{
 		InitialInterval:    time.Second,
 		BackoffCoefficient: 2.0,
@@ -16,8 +18,11 @@ func TransferMoney(ctx workflow.Context, transferDetails TransferDetails) error 
 	}
 
 	options := workflow.ActivityOptions{
+		// Timeout options specify when to automatically timeout Activity functions.
 		StartToCloseTimeout: time.Minute,
-		RetryPolicy:         retryPolicy,
+		// Optionally provide a customized RetryPolicy.
+		// Temporal retries failures by default, this is just an example.
+		RetryPolicy: retryPolicy,
 	}
 	ctx = workflow.WithActivityOptions(ctx, options)
 	err := workflow.ExecuteActivity(ctx, Withdraw, transferDetails).Get(ctx, nil)
